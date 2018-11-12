@@ -1,16 +1,21 @@
 version: 2
 jobs:
   build:
-    docker:
-      - image: circleci/ruby:2.5.1
+    machine: true
+    working_directory: ~/repo
     steps:
       - checkout
       - run:
-          name: Test
+          name: Run container
           command: |
-            echo "It works"
-workflows:
-  version: 2
-  build-and-deploy:
-    jobs:
-      - build
+            docker run -t -d -w /opt/repo -v `pwd`:/opt/repo:rw --privileged --network host --name mytest ubuntu
+      - run:
+          name: Execute command
+          command: |
+            docker exec mytest bash -lc "echo it works"
+      - run:
+          name: Cleanup
+          when: always
+          command: |
+            docker kill mytest
+            docker rm mytest --force
