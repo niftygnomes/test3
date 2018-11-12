@@ -8,7 +8,7 @@ jobs:
       - run:
           name: Run container
           command: |
-            docker run -t -d -w /opt/repo -v `pwd`:/opt/repo:rw --privileged --network host --name mytest retzero/gbs_ubuntu16.04
+            docker run -t -d -w /opt/repo -v `pwd`:/opt/repo:rw --privileged --network host --name mytest ubuntu
       - run:
           name: Execute command
           command: |
